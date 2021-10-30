@@ -1,17 +1,21 @@
 trigger:
--'*'
+- '*'
 
 pool:
-  vmImage: 'ubuntu-latest'
-  demands:
-  -npm
+  vmImage: 'windows-latest'
 
 variables:
- buildConfiguration:'Release'
+  buildConfiguration: 'Release'
 
 steps:
-- task: UseDotNet@2
-  displayName: 'string'
+- task: DotNetCoreCLI@2
   inputs:
-   packageType: sdk
-   version: '5.x'
+    command: 'restore'
+    feedsToUse: 'select'
+    vstsFeed: 'my-vsts-feed' # A series of numbers and letters
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    arguments: '--configuration $(buildConfiguration)'
+  displayName: 'dotnet build $(buildConfiguration)
